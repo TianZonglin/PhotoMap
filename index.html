@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display a map on a webpage</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+<script
+	src="https://code.jquery.com/jquery-3.6.0.min.js"
+	integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+	crossorigin="anonymous"
+	></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoidHR6emxsNiIsImEiOiJjbDgzcWowcWUwOGtzM3ZwZmt3Z2c5djc4In0.Hp6sc0_kEOqI4poIBGIeVw';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+        style: 'mapbox://styles/mapbox/light-v10',
+        center: [5.2, 52.08], // starting position [lng, lat]
+        zoom: 9, // starting zoom
+        projection: 'globe' // display the map as a 3D globe
+    });
+
+
+	$.getJSON("list.json",function(data){
+		$.each(data,function(infoIndex,info){
+			let obj = info.split(",");
+			let time = obj[0];
+			let dev = obj[1];
+			let locb = obj[2].split("@")[0];
+			let loca = obj[2].split("@")[1];
+			new mapboxgl.Marker({color: "#FF0000",scale: 0.5,draggable: false}).
+				setLngLat([loca, locb]).addTo(map);
+		})
+		
+	})
+ 
+ 
+	
+
+ 
+
+    map.on('style.load', () => {
+        map.setFog({}); // Set the default atmosphere style
+    });
+</script>
+ 
+</body>
+</html>
